@@ -9,7 +9,7 @@ const serviceTypes = ["Oil", "Brakes", "Tires", "Battery", "Inspection", "Custom
 
 const steps = [
   "Select Vehicle",
-  "Enter Mileage & Date",
+  "Mileage, Date & Cost",
   "What was done?",
   "Tag Garage",
   "Upload Receipt",
@@ -23,6 +23,7 @@ export function AddServiceWizard() {
     vehicleId: vehicles[0]?.id ?? "",
     mileage: "",
     date: "",
+    cost: "",
     serviceType: "Oil",
     customType: "",
     description: "",
@@ -95,7 +96,7 @@ export function AddServiceWizard() {
                 id="mileage"
                 type="number"
                 placeholder="e.g. 64500"
-                className="w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm"
+                className="w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 value={form.mileage}
                 onChange={(event) => setForm((prev) => ({ ...prev, mileage: event.target.value }))}
               />
@@ -107,10 +108,30 @@ export function AddServiceWizard() {
               <input
                 id="service-date"
                 type="date"
-                className="w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm"
+                className="w-full rounded-xl border border-zinc-300 px-3 py-2 text-sm focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
                 value={form.date}
                 onChange={(event) => setForm((prev) => ({ ...prev, date: event.target.value }))}
               />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium text-zinc-700" htmlFor="cost">
+                Cost (optional)
+              </label>
+              <div className="relative">
+                <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-zinc-500">
+                  $
+                </span>
+                <input
+                  id="cost"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  className="w-full rounded-xl border border-zinc-300 py-2 pl-7 pr-3 text-sm focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  value={form.cost}
+                  onChange={(event) => setForm((prev) => ({ ...prev, cost: event.target.value }))}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -223,6 +244,7 @@ export function AddServiceWizard() {
         </p>
         <p className="text-sm text-zinc-600">Mileage: {form.mileage || "Not set"}</p>
         <p className="text-sm text-zinc-600">Date: {form.date || "Not set"}</p>
+        {form.cost && <p className="text-sm text-zinc-600">Cost: ${parseFloat(form.cost).toFixed(2)}</p>}
       </section>
 
       <div className="mt-6 grid grid-cols-2 gap-3">
@@ -241,6 +263,7 @@ export function AddServiceWizard() {
                 service_type: form.serviceType === "Custom" ? form.customType || "Custom Service" : form.serviceType,
                 description: form.description || "No description provided.",
                 garage_id: form.garageId,
+                cost: form.cost ? parseFloat(form.cost) : 0,
               });
               router.push(`/vehicle/${form.vehicleId}`);
             }}
