@@ -1,13 +1,14 @@
+"use client";
+
 import Link from "next/link";
-import { serviceRecords, garages } from "@/lib/mock-data";
+import { Star } from "lucide-react";
+import { useParams } from "next/navigation";
 import { VerifiedBadge } from "@/components/autolog/verified-badge";
+import { useAutoLog } from "@/components/providers/autolog-provider";
 
-interface GaragePageProps {
-  params: Promise<{ garage_id: string }>;
-}
-
-export default async function GaragePage({ params }: GaragePageProps) {
-  const { garage_id } = await params;
+export default function GaragePage() {
+  const { garage_id } = useParams<{ garage_id: string }>();
+  const { garages, serviceRecords } = useAutoLog();
   const garage = garages.find((item) => item.id === garage_id);
 
   if (!garage) return <main className="p-6">Garage profile not found.</main>;
@@ -22,7 +23,13 @@ export default async function GaragePage({ params }: GaragePageProps) {
         <h1 className="text-2xl font-bold">{garage.name}</h1>
         <p className="mt-1 text-sm text-zinc-600">{garage.address}</p>
         <p className="text-sm text-zinc-600">{garage.phone}</p>
-        <p className="mt-2 text-sm font-semibold text-indigo-600">Verified repairs: {verified.length}</p>
+        <div className="mt-2 flex items-center gap-2 text-sm">
+          <p className="font-semibold text-indigo-600">Verified repairs: {verified.length}</p>
+          <span className="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-1 text-zinc-600">
+            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+            4.8
+          </span>
+        </div>
       </section>
 
       <section className="mt-6 space-y-3">

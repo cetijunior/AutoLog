@@ -1,12 +1,4 @@
-import { Button } from "@/components/ui/button";
-
-const steps = [
-  "Select Vehicle",
-  "Enter Mileage & Date",
-  "What was done?",
-  "Tag Garage",
-  "Upload Receipt",
-];
+import { AddServiceWizard } from "@/app/add-service/add-service-wizard";
 
 export default function AddServicePage() {
   return (
@@ -14,24 +6,11 @@ export default function AddServicePage() {
       <header className="mb-5">
         <p className="text-xs uppercase tracking-wide text-zinc-500">Mobile Wizard</p>
         <h1 className="text-2xl font-bold">Add Service</h1>
+        <p className="mt-1 text-sm text-zinc-600">
+          Log maintenance in under 60 seconds with a guided flow.
+        </p>
       </header>
-
-      <div className="space-y-4">
-        {steps.map((step, index) => (
-          <section key={step} className="rounded-2xl border border-zinc-200 p-4">
-            <p className="text-xs font-semibold text-zinc-500">Step {index + 1}</p>
-            <h2 className="mt-1 font-semibold">{step}</h2>
-            <div className="mt-3 min-h-11 rounded-lg border border-zinc-300 bg-zinc-50 px-3 py-2 text-sm text-zinc-500">
-              Input placeholder for {step.toLowerCase()}.
-            </div>
-          </section>
-        ))}
-      </div>
-
-      <div className="mt-6 grid grid-cols-2 gap-3">
-        <Button variant="ghost">Back</Button>
-        <Button>Continue</Button>
-      </div>
+      <AddServiceWizard />
     </main>
   );
 }
