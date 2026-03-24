@@ -327,7 +327,7 @@ export function AddServiceWizard() {
           </span>
           {form.mileage && <span>{parseInt(form.mileage).toLocaleString()} mi</span>}
           {form.date && <span>{new Date(form.date).toLocaleDateString()}</span>}
-          {form.cost && <span>${parseFloat(form.cost).toFixed(2)}</span>}
+          {form.cost && Number(form.cost) > 0 && <span>${Number(form.cost).toFixed(2)}</span>}
         </div>
       </section>
 
@@ -348,7 +348,7 @@ export function AddServiceWizard() {
                 service_type: form.serviceType === "Custom" ? form.customType || "Custom Service" : form.serviceType,
                 description: form.description || "No description provided.",
                 garage_id: form.garageId,
-                cost: form.cost ? parseFloat(form.cost) : 0,
+                cost: Number(form.cost) > 0 ? Number(form.cost) : 0,
               });
               router.push(`/vehicle/${form.vehicleId}`);
             }}
